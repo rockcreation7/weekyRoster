@@ -2,6 +2,8 @@ package models
 
 // DayRoster ...
 type DayRoster struct {
+	ID            int    `json:"id"`
+	Date          string `json:"date"`
 	UpperStaff    string `json:"upperStaff,omitempty"`
 	UpperTime     string `json:"upperTime,omitempty"`
 	LowerStaff    string `json:"lowerStaff,omitempty"`
@@ -10,7 +12,7 @@ type DayRoster struct {
 }
 
 // WeekRoster ...
-type WeekRoster struct {
+/* type WeekRoster struct {
 	ID   int     `json:"Id"`
 	Year int     `json:"Year"`
 	Week int     `json:"Week"`
@@ -21,4 +23,4 @@ type WeekRoster struct {
 	Fri  []uint8 `json:"Fri"`
 	Sat  []uint8 `json:"Sat"`
 	Sun  []uint8 `json:"Sun"`
-}
+} */
