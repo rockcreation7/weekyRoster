@@ -1,8 +1,12 @@
 package main
 
 import (
+	"fmt"
+	"roster-api/middleware"
+
 	"github.com/gofiber/cors"
 	"github.com/gofiber/fiber"
+	_ "github.com/lib/pq"
 )
 
 func main() {
@@ -50,6 +54,16 @@ func main() {
 		Published bool   `json:"published"`
 		ID        string `json:"id"`
 	}
+
+	students := map[string]Staff{
+		"1": {Title: "Daniel", Published: true, ID: "12"},
+		"2": {Title: "Daniel", Published: true, ID: "12"},
+	}
+	students["22"] = Staff{Title: "Daniel", Published: true, ID: "12"}
+
+	app.Get("/api/rosters", middleware.GetAllRoster)
+
+	fmt.Println(students)
 
 	app.Listen(3000)
 }
