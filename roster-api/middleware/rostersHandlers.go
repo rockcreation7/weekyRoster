@@ -3,7 +3,8 @@ package middleware
 import (
 	// package to encode and decode the json into struct and vice versa
 	"database/sql"
-	"fmt" // models package where User schema is defined
+	"fmt"
+
 	"log" // used to access the request and response object of the api
 	"os"
 
@@ -20,46 +21,38 @@ import (
 	_ "github.com/lib/pq"
 )
 
+type response struct {
+	ID      int64  `json:"id,omitempty"`
+	Message string `json:"message,omitempty"`
+}
+
+type updateResponse struct {
+	Date    string `json:"date,omitempty"`
+	Message string `json:"message,omitempty"`
+}
+
 // GetAllRoster ...
 func GetAllRoster(c *fiber.Ctx) {
 	rosters, err := getAllRosters()
 	if err != nil {
-		log.Fatalf("Unable to get all user. %v", err)
+		log.Fatalf("Unable to get all roster. %v", err)
 	}
 
 	fmt.Println(err)
 	c.JSON(rosters)
 }
 
-type response struct {
-	ID      int64  `json:"id,omitempty"`
-	Message string `json:"message,omitempty"`
-}
-
 // CreateRoster ...
 func CreateRoster(c *fiber.Ctx) {
-	// set the header to content type x-www-form-urlencoded
-	// Allow all origin to handle cors issue
-	u := new(models.DayRoster)
+
+	Roster := new(models.DayRoster)
 	// Parse body into struct
-	if err := c.BodyParser(u); err != nil {
+	if err := c.BodyParser(Roster); err != nil {
 		c.Status(400).Send(err)
 		return
 	}
 
-	fmt.Println(u)
-	return
-	// create an empty user of type models.User
-	var Roster models.DayRoster
-
-	Roster.Date = "20200903"
-	Roster.UpperStaff = "david"
-	Roster.UpperTime = "david"
-	Roster.LowerStaff = "david"
-	Roster.LowerTime = " "
-	Roster.CustomMessage = " "
-
-	// call insert user function and pass the user
+	// call insert roster function and pass the roster
 	insertID, err := insertRoster(Roster)
 
 	if err != nil {
@@ -77,7 +70,54 @@ func CreateRoster(c *fiber.Ctx) {
 	c.JSON(res)
 }
 
-func insertRoster(Roster models.DayRoster) (int64, error) {
+// UpdateRoster update roster's detail in the postgres db
+func UpdateRoster(c *fiber.Ctx) {
+
+	Roster := new(models.DayRoster)
+	// Parse body into struct
+	if err := c.BodyParser(Roster); err != nil {
+		c.Status(400).Send(err)
+		return
+	}
+	date := c.Params("date")
+	updatedRows := updateRoster(date, Roster)
+
+	// format the message string
+	msg := fmt.Sprintf("Roster updated successfully. Total rows/record affected %v", updatedRows)
+
+	// format the response message
+	res := updateResponse{
+		Date:    date,
+		Message: msg,
+	}
+
+	// send the response
+	c.JSON(res)
+}
+
+// DeleteRoster delete roster's detail in the postgres db
+func DeleteRoster(c *fiber.Ctx) {
+
+	// call the deleteRoster
+
+	date := c.Params("date")
+	deletedRows := deleteRoster(date)
+
+	// format the message string
+	msg := fmt.Sprintf("Roster updated successfully. Total rows/record affected %v", deletedRows)
+
+	// format the reponse message
+	res := updateResponse{
+		Date:    date,
+		Message: msg,
+	}
+
+	c.JSON(res)
+}
+
+//------------------------- handler functions ----------------
+
+func insertRoster(Roster *models.DayRoster) (int64, error) {
 
 	db := createConnection()
 	defer db.Close()
@@ -137,8 +177,69 @@ func getAllRosters() ([]models.DayRoster, error) {
 	return rosters, err
 }
 
-// GetAllRoster send all Roster
+// update roster in the DB
+func updateRoster(date string, roster *models.DayRoster) int64 {
 
+	// create the postgres db connection
+	db := createConnection()
+
+	// close the db connection
+	defer db.Close()
+
+	// create the update sql query //date
+	sqlStatement := `UPDATE rosters SET UpperStaff=$2, LowerStaff=$3, UpperTime=$4, LowerTime=$5, CustomMessage=$6 WHERE date=$1`
+
+	// execute the sql statement
+	res, err := db.Exec(sqlStatement, date, roster.UpperStaff, roster.LowerStaff, roster.UpperTime, roster.LowerTime, roster.CustomMessage)
+
+	if err != nil {
+		log.Fatalf("Unable to execute the query. %v", err)
+	}
+
+	// check how many rows affected
+	rowsAffected, err := res.RowsAffected()
+
+	if err != nil {
+		log.Fatalf("Error while checking the affected rows. %v", err)
+	}
+
+	fmt.Printf("Total rows/record affected %v", rowsAffected)
+
+	return rowsAffected
+}
+
+// delete roster in the DB
+func deleteRoster(date string) int64 {
+
+	// create the postgres db connection
+	db := createConnection()
+
+	// close the db connection
+	defer db.Close()
+
+	// create the delete sql query
+	sqlStatement := `DELETE FROM rosters WHERE date=$1`
+
+	// execute the sql statement
+	res, err := db.Exec(sqlStatement, date)
+
+	if err != nil {
+		log.Fatalf("Unable to execute the query. %v", err)
+	}
+
+	// check how many rows affected
+	rowsAffected, err := res.RowsAffected()
+
+	if err != nil {
+		log.Fatalf("Error while checking the affected rows. %v", err)
+	}
+
+	fmt.Printf("Total rows/record affected %v", rowsAffected)
+
+	return rowsAffected
+}
+
+// GetAllRoster send all Roster
 func createConnection() *sql.DB {
 	err := godotenv.Load(".env")
 	if err != nil {

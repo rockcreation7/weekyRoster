@@ -8,13 +8,6 @@ import (
 	_ "github.com/lib/pq"
 )
 
-/* type employee struct {
-	ID     string `json: "Id"`
-	Name   string `json: "name"`
-	Salary string `json: "salary"`
-	Age    string `json: "age"`
-} */
-
 type response struct {
 	ID      int64  `json:"id,omitempty"`
 	Message string `json:"message,omitempty"`
@@ -24,8 +17,12 @@ func main() {
 	app := fiber.New()
 	app.Use(cors.New())
 
-	app.Get("/api/rosters", middleware.GetAllRoster)
-	app.Post("/api/insertrosters", middleware.CreateRoster)
+	api := app.Group("/api/roster/")
+
+	api.Get("/get", middleware.GetAllRoster)
+	api.Post("/insert", middleware.CreateRoster)
+	api.Put("/update/:date", middleware.UpdateRoster)
+	api.Delete("/delete/:date", middleware.DeleteRoster)
 
 	app.Listen(3000)
 }
