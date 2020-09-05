@@ -13,8 +13,7 @@
           </md-button>
         </a>
       </md-list-item>
-
-      <md-divider class="md-inset"></md-divider>
+ 
     </md-list>
   </div>
 </template>
@@ -33,19 +32,19 @@ export default {
     getDay(date) {
       switch (new Date(date).getDay()) {
         case 0:
-          return "Sunday";
+          return "星期日";
         case 1:
-          return "Monday";
+          return "星期一";
         case 2:
-          return "Tuesday";
+          return "星期二";
         case 3:
-          return "Wednesday";
+          return "星期三";
         case 4:
-          return "Thursday";
+          return "星期四";
         case 5:
-          return "Friday";
+          return "星期五";
         case 6:
-          return "Saturday";
+          return "星期六";
       }
     },
     retrieveRosters() {

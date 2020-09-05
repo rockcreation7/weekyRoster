@@ -2,7 +2,6 @@
   <div class="submit-form">
     <div v-if="!submitted">
       <div class="form-group">
-
         <label for="date">Date</label>
         <input
           type="text"
@@ -11,6 +10,7 @@
           required
           v-model="roster.date"
           name="date"
+          list="dateList"
         />
       </div>
 
@@ -22,6 +22,7 @@
           required
           v-model="roster.upperstaff"
           name="upperstaff"
+          list="staff"
         />
       </div>
 
@@ -33,6 +34,7 @@
           required
           v-model="roster.uppertime"
           name="uppertime"
+          list="time"
         />
       </div>
       <div class="form-group">
@@ -43,6 +45,7 @@
           required
           v-model="roster.lowerstaff"
           name="lowerstaff"
+          list="staff"
         />
       </div>
 
@@ -54,9 +57,9 @@
           required
           v-model="roster.lowertime"
           name="lowertime"
+          list="time"
         />
       </div>
-
 
       <div class="form-group">
         <label for="custommessage">Custom message</label>
@@ -68,7 +71,23 @@
           name="custommessage"
         />
       </div>
+      <datalist id="staff">
+        <option value="TzeYee"></option>
+        <option value="Chole"></option>
+        <option value="Fanny"></option>
+        <option value="Nam"></option>
+        <option value="Nicole"></option>
+      </datalist>
 
+      <datalist id="time">
+        <option value="12:00 am - 06:00 pm"></option>
+        <option value="12:00 am - 08:00 pm"></option>
+        <option value="6:00 pm - 08:00 pm"></option>
+      </datalist>
+      
+      <datalist id="dateList">
+        <option :value="new Date().getFullYear().toString()"></option>
+      </datalist>
       <button @click="saveRoster" class="btn btn-success">Submit</button>
     </div>
 
@@ -86,42 +105,42 @@ export default {
   name: "add-roster",
   data() {
     return {
-      roster: { 
-        date:"",
+      roster: {
+        date: "",
         upperstaff: "",
         uppertime: "",
         lowerstaff: "",
-        lowertime:"",
-        custommessage:""
+        lowertime: "",
+        custommessage: "",
       },
-      submitted: false
+      submitted: false,
     };
   },
   methods: {
     saveRoster() {
       var data = {
-        date:this.roster.date,
+        date: this.roster.date,
         upperstaff: this.roster.upperstaff,
         uppertime: this.roster.uppertime,
-        lowerstaff:this.roster.lowerstaff,
-        lowertime:this.roster.lowertime
+        lowerstaff: this.roster.lowerstaff,
+        lowertime: this.roster.lowertime,
       };
 
       RosterDataService.create(data)
-        .then(response => {  
+        .then((response) => {
           this.submitted = true;
-          console.log(response)
+          console.log(response);
         })
-        .catch(e => {
+        .catch((e) => {
           console.log(e);
         });
     },
-    
+
     newRoster() {
       this.submitted = false;
       this.tutorial = {};
-    }
-  }
+    },
+  },
 };
 </script>
 

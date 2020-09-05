@@ -2,7 +2,6 @@
   <div v-if="currentRoster" class="edit-form">
     <h4>Roster</h4>
     <form>
-      {{ message }}
       <div class="form-group">
         <label for="Date">Date</label>
         <input type="text" class="form-control" id="Date" v-model="currentRoster.date" />
@@ -52,11 +51,10 @@
 import RosterDataService from "../services/RosterDataService";
 
 export default {
-  name: "Roster", 
+  name: "Roster",
   data() {
     return {
       currentRoster: null,
-      message: "No Message",
     };
   },
   methods: {
@@ -74,7 +72,7 @@ export default {
       RosterDataService.update(this.currentRoster.date, this.currentRoster)
         .then((response) => {
           console.log(response.data);
-          this.message = "The tutorial was updated successfully!";
+           this.$router.push("/");
         })
         .catch((e) => {
           console.log(e);
