@@ -1,6 +1,6 @@
 <template>
-  <div class="list row">
-    <md-list class="md-triple-line">
+  <div class="list row"> 
+    <md-list>
       <md-list-item class="list-group-item" v-for="(roster, index) in rosters" :key="index">
         <div class="md-list-item-text">
           <span>{{getDay(roster.date)}} {{roster.date.slice(5,10)}}</span>
@@ -27,16 +27,10 @@ export default {
   data() {
     return {
       rosters: [],
-      currentRoster: null,
-      currentIndex: -1,
-      date: "",
     };
   },
   methods: {
     getDay(date) {
-      console.log(date);
-      console.log(new Date(date));
-      console.log(new Date(date).getDay);
       switch (new Date(date).getDay()) {
         case 0:
           return "Sunday";
@@ -56,39 +50,6 @@ export default {
     },
     retrieveRosters() {
       RosterDataService.getAll()
-        .then((response) => {
-          this.rosters = response.data;
-          console.log(response.data);
-        })
-        .catch((e) => {
-          console.log(e);
-        });
-    },
-
-    refreshList() {
-      this.retrieveRosters();
-      this.currentRoster = null;
-      this.currentIndex = -1;
-    },
-
-    setActiveRoster(Roster, index) {
-      this.currentRoster = Roster;
-      this.currentIndex = index;
-    },
-
-    /*     removeAllRosters() {
-      RosterDataService.deleteAll()
-        .then(response => {
-          console.log(response.data);
-          this.refreshList();
-        })
-        .catch(e => {
-          console.log(e);
-        });
-    }, */
-
-    searchDate() {
-      RosterDataService.findByDate(this.Date)
         .then((response) => {
           this.rosters = response.data;
           console.log(response.data);
