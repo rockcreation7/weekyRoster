@@ -17,9 +17,10 @@ func main() {
 	app := fiber.New()
 	app.Use(cors.New())
 
-	api := app.Group("/api/roster/")
+	api := app.Group("/api/roster")
 
 	api.Get("/get", middleware.GetAllRoster)
+	api.Get("/get/:date", middleware.GetRoster)
 	api.Post("/insert", middleware.CreateRoster)
 	api.Put("/update/:date", middleware.UpdateRoster)
 	api.Delete("/delete/:date", middleware.DeleteRoster)

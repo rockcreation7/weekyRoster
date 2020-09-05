@@ -7,6 +7,7 @@ import (
 
 	"log" // used to access the request and response object of the api
 	"os"
+	"time"
 
 	// used to read the environment variable
 	"roster-api/models"
@@ -115,6 +116,21 @@ func DeleteRoster(c *fiber.Ctx) {
 	c.JSON(res)
 }
 
+// GetRoster get roster by date
+func GetRoster(c *fiber.Ctx) {
+
+	date := c.Params("date")
+	// convert the id type from string to int
+
+	roster, err := getRoster(date)
+
+	if err != nil {
+		log.Fatalf("Unable to get user. %v", err)
+	}
+
+	c.JSON(roster)
+}
+
 //------------------------- handler functions ----------------
 
 func insertRoster(Roster *models.DayRoster) (int64, error) {
@@ -147,9 +163,16 @@ func getAllRosters() ([]models.DayRoster, error) {
 	db := createConnection()
 	defer db.Close()
 
+	today := time.Now()
+	sevenDayLater := today.AddDate(0, 0, 7)
+
+	fmt.Println(today)
+	fmt.Println(sevenDayLater)
+
+	// SELECT * from Rosters where (date <= '2020-09-09' AND date >= '2020-09-04')
 	var rosters []models.DayRoster
-	sqlStatement := `SELECT * FROM Rosters`
-	rows, err := db.Query(sqlStatement)
+	sqlStatement := `SELECT * from Rosters where (date <= $1 AND date >= $2)`
+	rows, err := db.Query(sqlStatement, sevenDayLater, today)
 	if err != nil {
 		log.Fatalf("Unable to execute the query. %v", err)
 	}
@@ -237,6 +260,48 @@ func deleteRoster(date string) int64 {
 	fmt.Printf("Total rows/record affected %v", rowsAffected)
 
 	return rowsAffected
+}
+
+// get one user from the DB by its userid
+func getRoster(date string) (models.DayRoster, error) {
+	// create the postgres db connection
+	db := createConnection()
+
+	// close the db connection
+	defer db.Close()
+
+	// create a user of models.User type
+	var roster models.DayRoster
+
+	// create the select sql query
+	sqlStatement := `SELECT * FROM Rosters WHERE date=$1`
+
+	// execute the sql statement
+	row := db.QueryRow(sqlStatement, date)
+
+	// unmarshal the row object to user
+	err := row.Scan(
+		&roster.ID,
+		&roster.Date,
+		&roster.UpperStaff,
+		&roster.UpperTime,
+		&roster.LowerStaff,
+		&roster.LowerTime,
+		&roster.CustomMessage,
+	)
+
+	switch err {
+	case sql.ErrNoRows:
+		fmt.Println("No rows were returned!")
+		return roster, nil
+	case nil:
+		return roster, nil
+	default:
+		log.Printf("Unable to scan the row. %v", err)
+	}
+
+	// return empty user on error
+	return roster, err
 }
 
 // GetAllRoster send all Roster

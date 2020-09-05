@@ -2,52 +2,44 @@
   <div class="list row">
     <div class="col-md-8">
       <div class="input-group mb-3">
-        <input type="text" class="form-control" placeholder="Search by title"
-          v-model="title"/>
+        <input type="text" class="form-control" placeholder="Search by date" v-model="title" />
         <div class="input-group-append">
-          <button class="btn btn-outline-secondary" type="button"
-            @click="searchTitle"
-          >
-            Search
-          </button>
+          <button class="btn btn-outline-secondary" type="button" @click="searchRoster">Search</button>
         </div>
       </div>
     </div>
     <div class="col-md-6">
-      <h4>Tutorials List</h4>
+      <h4>Rosters List</h4>
       <ul class="list-group">
-        <li class="list-group-item"
+        <li
+          class="list-group-item"
           :class="{ active: index == currentIndex }"
-          v-for="(tutorial, index) in tutorials"
+          v-for="(roster, index) in rosters"
           :key="index"
-          @click="setActiveTutorial(tutorial, index)"
-        >
-          {{ tutorial.title }}
-        </li>
+          @click="setActiveRoster(roster, index)"
+        >{{ roster.date }}</li>
       </ul>
-
-      <button class="m-3 btn btn-sm btn-danger" @click="removeAllTutorials">
+      <!-- 
+      <button class="m-3 btn btn-sm btn-danger" @click="removeAllRosters">
         Remove All
-      </button>
+      </button>-->
     </div>
     <div class="col-md-6">
       <div v-if="currentTutorial">
-        <h4>Tutorial</h4>
+        <h4>Roster</h4>
         <div>
-          <label><strong>Title:</strong></label> {{ currentTutorial.title }}
+          <label>
+            <strong>Date:</strong>
+          </label>
+          {{ currentTutorial.date }}
         </div>
         <div>
-          <label><strong>Description:</strong></label> {{ currentTutorial.description }}
+          <label>
+            <strong>Upper Staff:</strong>
+          </label>
+          {{ currentTutorial.upperStaff }}
         </div>
-        <div>
-          <label><strong>Status:</strong></label> {{ currentTutorial.published ? "Published" : "Pending" }}
-        </div>
-
-        <a class="badge badge-warning"
-          :href="'/tutorials/' + currentTutorial.id"
-        >
-          Edit
-        </a>
+        <a class="btn btn-warning" :href="'/roster/' + currentTutorial.id">Edit</a>
       </div>
       <div v-else>
         <br />
@@ -67,18 +59,18 @@ export default {
       tutorials: [],
       currentTutorial: null,
       currentIndex: -1,
-      title: ""
+      title: "",
     };
   },
   methods: {
     retrieveTutorials() {
       TutorialDataService.getAll()
-        .then(response => {
+        .then((response) => {
           this.tutorials = response.data;
-          console.log(response)
-          console.log(response.data); 
+          console.log(response);
+          console.log(response.data);
         })
-        .catch(e => {
+        .catch((e) => {
           console.log(e);
         });
     },
@@ -96,29 +88,29 @@ export default {
 
     removeAllTutorials() {
       TutorialDataService.deleteAll()
-        .then(response => {
+        .then((response) => {
           console.log(response.data);
           this.refreshList();
         })
-        .catch(e => {
+        .catch((e) => {
           console.log(e);
         });
     },
-    
+
     searchTitle() {
       TutorialDataService.findByTitle(this.title)
-        .then(response => {
+        .then((response) => {
           this.tutorials = response.data;
           console.log(response.data);
         })
-        .catch(e => {
+        .catch((e) => {
           console.log(e);
         });
-    }
+    },
   },
   mounted() {
-  this.retrieveTutorials();
-  }
+    this.retrieveTutorials();
+  },
 };
 </script>
 
