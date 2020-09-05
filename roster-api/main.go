@@ -19,6 +19,8 @@ func main() {
 
 	api := app.Group("/api/roster")
 
+	app.Static("/", "./dist")
+
 	api.Get("/get", middleware.GetAllRoster)
 	api.Get("/get/:date", middleware.GetRoster)
 	api.Post("/insert", middleware.CreateRoster)
