@@ -35,9 +35,7 @@
         />
       </div>
     </form>
-
-    <!--   <button class="btn btn-danger mr-2" @click="deleteRoster">Delete</button> -->
-
+    <DataList/>
     <button type="submit" class="btn btn-primary" @click="updateRoster">Update</button>
   </div>
 
@@ -49,8 +47,12 @@
 
 <script>
 import RosterDataService from "../services/RosterDataService";
+import DataList from "../components/DataList";
 
 export default {
+  components: {
+    DataList,
+  },
   name: "Roster",
   data() {
     return {
@@ -72,14 +74,13 @@ export default {
       RosterDataService.update(this.currentRoster.date, this.currentRoster)
         .then((response) => {
           console.log(response.data);
-           this.$router.push("/");
+          this.$router.push("/");
         })
         .catch((e) => {
           console.log(e);
         });
     },
-
-    /*     updatePublished(status) {
+    /* updatePublished(status) {
       var data = {
         id: this.currentTutorial.id,
         title: this.currentTutorial.title,

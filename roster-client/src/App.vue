@@ -9,6 +9,12 @@
         <li class="nav-item">
           <a href="/addroster" class="nav-link">Add Roster</a>
         </li>
+        <li class="nav-item">
+          <a href="/products" class="nav-link">Products</a>
+        </li>
+        <li class="nav-item">
+          <a href="/addproduct" class="nav-link">Add Product</a>
+        </li>
       </div>
     </nav>
 

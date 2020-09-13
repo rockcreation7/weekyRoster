@@ -22,6 +22,18 @@ export default new Router({
       name: "addroster",
       component: () => import("./components/AddRoster"),
     },
+
+    {
+      path: "/products",
+      name: "products",
+      component: () => import("./components/ProductsList"),
+    },
+
+    {
+      path: "/addProduct",
+      name: "addProduct",
+      component: () => import("./components/AddProduct"),
+    },
     /* {
         path: "/tutorials/:id",
         name: "tutorial-details",

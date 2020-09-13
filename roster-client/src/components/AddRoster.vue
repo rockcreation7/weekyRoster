@@ -70,27 +70,10 @@
           v-model="roster.custommessage"
           name="custommessage"
         />
-      </div>
-      <datalist id="staff">
-        <option value="TzeYee"></option>
-        <option value="Chole"></option>
-        <option value="Fanny"></option>
-        <option value="Nam"></option>
-        <option value="Nicole"></option>
-      </datalist>
-
-      <datalist id="time">
-        <option value="12:00 am - 06:00 pm"></option>
-        <option value="12:00 am - 08:00 pm"></option>
-        <option value="6:00 pm - 08:00 pm"></option>
-      </datalist>
-      
-      <datalist id="dateList">
-        <option :value="new Date().getFullYear().toString()"></option>
-      </datalist>
+      </div> 
+      <DataList/>
       <button @click="saveRoster" class="btn btn-success">Submit</button>
     </div>
-
     <div v-else>
       <h4>You submitted successfully!</h4>
       <button class="btn btn-success" @click="newRoster">Add Roster</button>
@@ -100,8 +83,11 @@
 
 <script>
 import RosterDataService from "../services/RosterDataService";
-
+import DataList from "../components/DataList";
 export default {
+  components: {
+    DataList
+  },
   name: "add-roster",
   data() {
     return {

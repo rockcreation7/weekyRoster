@@ -1,5 +1,8 @@
 import axios from "axios"; 
 
 export default axios.create({
-  baseURL: "/api/roster"
+  // Development
+  baseURL: "http://localhost:8000/api"
+  // Production
+  // baseURL: "/api"
 });

@@ -13,7 +13,6 @@
           </md-button>
         </a>
       </md-list-item>
- 
     </md-list>
   </div>
 </template>
@@ -26,6 +25,7 @@ export default {
   data() {
     return {
       rosters: [],
+      shop: "nf",
     };
   },
   methods: {
@@ -48,7 +48,7 @@ export default {
       }
     },
     retrieveRosters() {
-      RosterDataService.getAll()
+      RosterDataService.getAll(this.shop)
         .then((response) => {
           this.rosters = response.data;
           console.log(response.data);
@@ -56,6 +56,10 @@ export default {
         .catch((e) => {
           console.log(e);
         });
+    },
+    changeShop(shop) {
+      this.shop = shop;
+      this.retrieveRosters();
     },
   },
   mounted() {
