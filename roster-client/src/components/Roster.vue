@@ -4,25 +4,55 @@
     <form>
       <div class="form-group">
         <label for="Date">Date</label>
-        <input type="text" class="form-control" id="Date" v-model="currentRoster.date" />
+        <input
+          list="dateList"
+          type="text"
+          class="form-control"
+          id="Date"
+          v-model="currentRoster.date"
+        />
       </div>
 
       <div class="form-group">
         <label for="upperstaff">Upper Staff</label>
-        <input type="text" class="form-control" id="upperstaff" v-model="currentRoster.upperStaff" />
+        <input
+          list="staff"
+          type="text"
+          class="form-control"
+          id="upperstaff"
+          v-model="currentRoster.upperStaff"
+        />
       </div>
       <div class="form-group">
         <label for="upperTime">Upper Time</label>
-        <input type="text" class="form-control" id="upperTime" v-model="currentRoster.upperTime" />
+        <input
+          list="time"
+          type="text"
+          class="form-control"
+          id="upperTime"
+          v-model="currentRoster.upperTime"
+        />
       </div>
 
       <div class="form-group">
         <label for="lowerStaff">Lower Staff</label>
-        <input type="text" class="form-control" id="lowerStaff" v-model="currentRoster.lowerStaff" />
+        <input
+          list="staff"
+          type="text"
+          class="form-control"
+          id="lowerStaff"
+          v-model="currentRoster.lowerStaff"
+        />
       </div>
       <div class="form-group">
         <label for="lowerTime">Lower Time</label>
-        <input type="text" class="form-control" id="lowerTime" v-model="currentRoster.lowerTime" />
+        <input
+          list="time"
+          type="text"
+          class="form-control"
+          id="lowerTime"
+          v-model="currentRoster.lowerTime"
+        />
       </div>
 
       <div class="form-group">
@@ -35,7 +65,7 @@
         />
       </div>
     </form>
-    <DataList/>
+    <DataList />
     <button type="submit" class="btn btn-primary" @click="updateRoster">Update</button>
   </div>
 

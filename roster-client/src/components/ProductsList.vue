@@ -3,18 +3,21 @@
     <input type="text" v-model="search" placeholder="Search Code/Name.." />
     <md-list>
       <md-list-item class="list-group-item" v-for="(product, index) in filteredList" :key="index">
-        <div class="md-list-item-text">
-          <span>Name : {{product.name}}</span>
-          <span>{{product.cost}}</span>
-          <span>{{product.price}}</span>
-          <span>{{product.qty}}</span>
+        <span> {{product.name}}</span>
+        <!-- <span>Cost : {{product.cost}}</span> -->
+        <!-- <span>Qty : {{product.qty}}</span>
           <span>Code : {{product.code}}</span>
-        </div>
+        <span>Catagory : {{product.code}}</span>-->
+        <span>$ {{product.price}} </span>
+        <span> Code {{product.code}}</span>
         <a>
           <md-button class="md-icon-button md-list-action" :href="'/product/' + product.id">
             <md-icon class="md">edit</md-icon>
           </md-button>
         </a>
+        <md-button @click="handleProductDelete(product.id)" class="md-icon-button md-list-action">
+          <md-icon class="md">delete</md-icon>
+        </md-button>
       </md-list-item>
     </md-list>
   </div>
@@ -42,6 +45,18 @@ export default {
           console.log(e);
         });
     },
+    handleProductDelete(id) {
+      ProductDataService.delete(id)
+        .then((response) => {
+          console.log(response.data);
+          console.log("successfully delete");
+          this.retrieveProducts();
+        })
+        .catch((e) => {
+          console.log(e);
+          console.log("delete fail");
+        });
+    },
   },
   mounted() {
     this.retrieveProducts();
@@ -50,7 +65,10 @@ export default {
     filteredList() {
       return this.products.filter((product) => {
         if (product.code) {
-          return (String(product.code).includes(this.search.toLowerCase())) || (product.name.toLowerCase().includes(this.search.toLowerCase()));
+          return (
+            String(product.code).includes(this.search.toLowerCase()) ||
+            product.name.toLowerCase().includes(this.search.toLowerCase())
+          );
         } else {
           if (this.search === "") {
             return true;

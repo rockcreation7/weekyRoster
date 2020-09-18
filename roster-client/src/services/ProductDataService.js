@@ -5,16 +5,20 @@ class ProductDataService {
     return http.get(`/product/get`)
   }
 
-  get(date) {
-    return http.get(`/product/get/${date}`)
+  get(id) {
+    return http.get(`/product/get/${id}`)
   }
 
-  create(data) {
-    return http.post(`/product/insert`, data)
+  create(id) {
+    return http.post(`/product/insert`, id)
   }
 
-  update(date, data) {
-    return http.put(`/product/update/${date}`, data)
+  update(id, data) {
+    return http.put(`/product/update/${id}`, data)
+  }
+
+  delete(id) {
+    return http.delete(`/product/delete/${id}`)
   }
 }
 

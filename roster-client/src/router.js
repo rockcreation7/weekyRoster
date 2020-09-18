@@ -34,11 +34,11 @@ export default new Router({
       name: "addProduct",
       component: () => import("./components/AddProduct"),
     },
-    /* {
-        path: "/tutorials/:id",
-        name: "tutorial-details",
-        component: () => import("./components/Tutorial")
-      }, */
+    {
+      path: "/product/:id",
+      name: "product-details",
+      component: () => import("./components/Product"),
+    },
     /*{
         path: "/add",
         name: "add",
