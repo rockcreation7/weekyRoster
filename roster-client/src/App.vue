@@ -1,19 +1,22 @@
 <template>
   <div id="app">
+    <router-link to="/rosters">Roster</router-link>
     <nav class="navbar navbar-expand">
-      <a href="#" class="navbar-brand">Roster</a>
-      <div class="navbar-nav mr-auto">
+      <div class="navbar-nav">
         <li class="nav-item">
-          <a href="/rosters" class="nav-link">Rosters</a>
+          <router-link to="/rosters" class="nav-link">Home</router-link>
         </li>
         <li class="nav-item">
-          <a href="/addroster" class="nav-link">Add Roster</a>
+          <router-link to="/addroster" class="nav-link">+Roster</router-link>
         </li>
         <li class="nav-item">
-          <a href="/products" class="nav-link">Products</a>
+          <router-link to="/products" class="nav-link">Products</router-link>
         </li>
         <li class="nav-item">
-          <a href="/addproduct" class="nav-link">Add Product</a>
+          <router-link to="/addproduct" class="nav-link">+Product</router-link>
+        </li>
+        <li class="nav-item">
+          <router-link to="/cart" class="nav-link">Cart</router-link>
         </li>
       </div>
     </nav>

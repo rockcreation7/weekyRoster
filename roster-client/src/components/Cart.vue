@@ -1,23 +1,27 @@
 <template>
   <div class="list row">
-    <input type="text" v-model="search" placeholder="Search Code/Name.." />
     <md-list>
       <md-list-item class="list-group-item" v-for="(product, index) in filteredList" :key="index">
-        <span> {{product.name}}</span>
+        <span>{{product.name}}</span>
+        <span>$ {{product.price}}</span>
+        <span>Code {{product.code}}</span>
+        <button @click="addToCart(product)">Add to Cart</button>
+      </md-list-item>
+    </md-list>
+    <div>
+      <input type="text" v-model="search" placeholder="Search Code/Name.." />
+    </div>
+
+    <md-list>
+      <md-list-item class="list-group-item" v-for="(product, index) in cart" :key="index">
+        <span>{{product.name}}</span>
         <!-- <span>Cost : {{product.cost}}</span> -->
         <!-- <span>Qty : {{product.qty}}</span>
           <span>Code : {{product.code}}</span>
         <span>Catagory : {{product.code}}</span>-->
+        <span>{{product.cartQty}}</span>
         <span>$ {{product.price}}</span>
-        <span> -- {{product.code}}</span>
-        <a>
-          <md-button class="md-icon-button md-list-action" :href="'/product/' + product.id">
-            <md-icon class="md">edit</md-icon>
-          </md-button>
-        </a>
-        <md-button @click="handleProductDelete(product.id)" class="md-icon-button md-list-action">
-          <md-icon class="md">delete</md-icon>
-        </md-button>
+        <span>Code {{product.code}}</span>
       </md-list-item>
     </md-list>
   </div>
@@ -32,6 +36,7 @@ export default {
     return {
       search: "",
       products: [],
+      cart: [],
     };
   },
   methods: {
@@ -57,6 +62,22 @@ export default {
           console.log("delete fail");
         });
     },
+    addToCart(product) {
+      console.log({ cart: this.cart });
+      const cartProductIndex = this.cart.findIndex((cartProduct) => {
+        return cartProduct.code === product.code;
+      });
+
+      if (this.cart.length === 0 || this.cart[cartProductIndex] === undefined) {
+        product.cartQty = 1;
+        this.cart.push(product);
+        return;
+      } else if (this.cart.length > 0) {
+        product.cartQty = this.cart[cartProductIndex].cartQty + 1;
+        this.$set(this.cart, cartProductIndex, product);
+        return;
+      }
+    },
   },
   mounted() {
     this.retrieveProducts();
@@ -70,9 +91,7 @@ export default {
             product.name.toLowerCase().includes(this.search.toLowerCase())
           );
         } else {
-          if (this.search === "") {
-            return true;
-          }
+          console.log("here");
           return false;
         }
       });
