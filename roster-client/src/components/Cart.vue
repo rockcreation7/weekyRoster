@@ -11,7 +11,9 @@
     <div>
       <input type="text" v-model="search" placeholder="Search Code/Name.." />
     </div>
-
+    <br />
+    <div>Cart Total : {{cartTotal}}</div>
+    <br />
     <md-list>
       <md-list-item class="list-group-item" v-for="(product, index) in cart" :key="index">
         <span>{{product.name}}</span>
@@ -21,6 +23,8 @@
         <span>Catagory : {{product.code}}</span>-->
         <span>{{product.cartQty}}</span>
         <span>$ {{product.price}}</span>
+        <span @click="addToCart(product)">++</span>
+        <span @click="rmFromCart(product)">--</span>
         <span>Code {{product.code}}</span>
       </md-list-item>
     </md-list>
@@ -63,6 +67,12 @@ export default {
         });
     },
     addToCart(product) {
+      this.adjustCart(product, "add");
+    },
+    rmFromCart(product) {
+      this.adjustCart(product, "rm");
+    },
+    adjustCart(product, operation) {
       console.log({ cart: this.cart });
       const cartProductIndex = this.cart.findIndex((cartProduct) => {
         return cartProduct.code === product.code;
@@ -73,7 +83,14 @@ export default {
         this.cart.push(product);
         return;
       } else if (this.cart.length > 0) {
-        product.cartQty = this.cart[cartProductIndex].cartQty + 1;
+        if (operation === "add") {
+          product.cartQty = this.cart[cartProductIndex].cartQty + 1;
+        } else if (
+          operation === "rm" &&
+          this.cart[cartProductIndex].cartQty > 0
+        ) {
+          product.cartQty = this.cart[cartProductIndex].cartQty - 1;
+        }
         this.$set(this.cart, cartProductIndex, product);
         return;
       }
@@ -85,16 +102,26 @@ export default {
   computed: {
     filteredList() {
       return this.products.filter((product) => {
-        if (product.code) {
+        if (product.code && this.search === "") {
+          // why "" still count as includes == true
           return (
             String(product.code).includes(this.search.toLowerCase()) ||
             product.name.toLowerCase().includes(this.search.toLowerCase())
           );
         } else {
-          console.log("here");
           return false;
         }
       });
+    },
+    cartTotal() {
+      if (this.cart.length === 0) {
+        return 0;
+      }
+
+      const calCartTotal = this.cart.reduce((accumulator, product) => {
+        return accumulator + product.price * product.cartQty;
+      }, 0);
+      return Math.round(calCartTotal * 10) / 10;
     },
   },
 };
