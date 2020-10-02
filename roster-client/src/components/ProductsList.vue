@@ -1,13 +1,10 @@
 <template>
   <div class="list row">
     <input type="text" v-model="search" placeholder="Search Code/Name.." />
+    
     <md-list>
       <md-list-item class="list-group-item" v-for="(product, index) in filteredList" :key="index">
-        <span> {{product.name}}</span>
-        <!-- <span>Cost : {{product.cost}}</span> -->
-        <!-- <span>Qty : {{product.qty}}</span>
-          <span>Code : {{product.code}}</span>
-        <span>Catagory : {{product.code}}</span>-->
+        <span> {{product.name}}</span> 
         <span>$ {{product.price}}</span>
         <span> -- {{product.code}}</span>
         <a>
@@ -67,12 +64,10 @@ export default {
         if (product.code) {
           return (
             String(product.code).includes(this.search.toLowerCase()) ||
-            product.name.toLowerCase().includes(this.search.toLowerCase())
+            product.name.toLowerCase().includes(this.search.toLowerCase()) ||
+            String(product.price).includes(this.search.toLowerCase())
           );
         } else {
-          if (this.search === "") {
-            return true;
-          }
           return false;
         }
       });
