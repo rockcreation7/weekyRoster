@@ -4,13 +4,12 @@
       <div class="form-group">
         <label for="date">Date</label>
         <input
-          type="text"
           class="form-control"
           id="date"
           required
           v-model="roster.date"
           name="date"
-          list="dateList"
+          type="date" 
         />
       </div>
 
@@ -70,8 +69,8 @@
           v-model="roster.custommessage"
           name="custommessage"
         />
-      </div> 
-      <DataList/>
+      </div>
+      <DataList />
       <button @click="saveRoster" class="btn btn-success">Submit</button>
     </div>
     <div v-else>
@@ -86,7 +85,7 @@ import RosterDataService from "../services/RosterDataService";
 import DataList from "../components/DataList";
 export default {
   components: {
-    DataList
+    DataList,
   },
   name: "add-roster",
   data() {

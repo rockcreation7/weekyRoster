@@ -10,28 +10,26 @@
           <span>{{ product.name }}</span>
           <span>{{ product.cartQty }}</span>
           <span>$ {{ product.price }}</span>
+          <p>Code {{ product.code }}</p>
         </div>
         <!-- 
         <span @click="addToCart(product)">++</span>
         <span @click="rmFromCart(product)">--</span>
  -->
         <div>
-          <div>
-            <md-button
-              @click="addToCart(product)"
-              class="md-icon-button md-list-action"
-            >
-              <md-icon class="md">add</md-icon>
-            </md-button>
+          <md-button
+            @click="addToCart(product)"
+            class="md-icon-button md-list-action"
+          >
+            <md-icon class="md">add</md-icon>
+          </md-button>
 
-            <md-button
-              @click="rmFromCart(product)"
-              class="md-icon-button md-list-action"
-            >
-              <md-icon class="md">remove</md-icon>
-            </md-button>
-          </div>
-          <span>Code {{ product.code }}</span>
+          <md-button
+            @click="rmFromCart(product)"
+            class="md-icon-button md-list-action"
+          >
+            <md-icon class="md">remove</md-icon>
+          </md-button>
         </div>
 
         <md-button
@@ -46,20 +44,28 @@
     <div class="fucntionBar">
       <md-field>
         <md-input
-          :type="getSearchType"
+          v-if="serachType === 'byName'"
           v-model="search"
-          placeholder="Input Price"
+          placeholder="Search Name"
+          inputmode="text"
+        ></md-input>
+        <md-input
+          v-else
+          v-model="search"
+          placeholder="Search Price/Code"
           inputmode="decimal"
         ></md-input>
       </md-field>
     </div>
     <div class="fucntionBar">
-      <b>Cart Total : {{ cartTotal }}</b>
+      <b>Cart Total : $ HKD {{ cartTotal }}</b>
       <md-button class="md-raised clear" @click="clearCart()">Clear</md-button>
-      <!--  <div>
-        <button @click="setSerachType('byPrice')">by price</button>
-        <button @click="setSerachType('byName')">by name</button>
-      </div> -->
+    </div>
+
+    <div class="fucntionBar"> 
+      <md-radio v-model="serachType" value="byPrice">by price</md-radio>
+      <md-radio v-model="serachType" value="byName">by name</md-radio>
+      <md-radio v-model="serachType" value="byCode">by code</md-radio>
     </div>
 
     <md-list>
@@ -97,9 +103,6 @@ export default {
     };
   },
   methods: {
-    setSerachType(type) {
-      this.searchType = type;
-    },
     retrieveProducts() {
       ProductDataService.getAll()
         .then((response) => {
@@ -150,30 +153,22 @@ export default {
     this.retrieveProducts();
   },
   computed: {
-    getSearchType() {
-      switch (this.searchType) {
-        case "byName":
-          return "text";
-        case "byPrice":
-          return "number";
-        default:
-          return "number";
-      }
-    },
     filteredList() {
       return this.products.filter((product) => {
         if (this.search === "") {
           return false;
-        }
-        if (product.code) {
-          // why "" still count as includes == true
-          return (
-            /* String(product.code).includes(this.search.toLowerCase()) ||
-            product.name.toLowerCase().includes(this.search.toLowerCase()) || */
-            String(product.price).includes(this.search.toLowerCase())
-          );
-        } else {
-          return false;
+        } 
+        switch (this.serachType) {
+          case "byPrice":
+            return String(product.price).includes(this.search.toLowerCase());
+          case "byName":
+            return product.name
+              .toLowerCase()
+              .includes(this.search.toLowerCase());
+          case "byCode":
+            return String(product.code).includes(this.search.toLowerCase());
+          default:
+            return String(product.price).includes(this.search.toLowerCase());
         }
       });
     },

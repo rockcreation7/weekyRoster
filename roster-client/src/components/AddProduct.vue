@@ -73,7 +73,13 @@
 
       <div class="form-group">
         <label for="imgurl">Image Url</label>
-        <input class="form-control" id="imgurl" required v-model="product.imgurl" name="imgurl" />
+        <input
+          class="form-control"
+          id="imgurl"
+          required
+          v-model="product.imgurl"
+          name="imgurl"
+        />
       </div>
       <DataList />
       <button @click="saveProduct" class="btn btn-success">Submit</button>
@@ -82,6 +88,15 @@
       <h4>You submitted successfully!</h4>
       <button class="btn btn-success" @click="newProduct">Add Product</button>
     </div>
+
+    <md-snackbar
+      :md-position="position"
+      :md-duration="isInfinity ? Infinity : duration"
+      :md-active.sync="showSnackbar"
+      md-persistent
+    >
+      <span>{{ error }}</span>
+    </md-snackbar>
   </div>
 </template>
 
@@ -101,6 +116,11 @@ export default {
         imgurl: "",
       },
       submitted: false,
+      showSnackbar: false,
+      position: "center",
+      duration: 4000,
+      isInfinity: false,
+      error: "",
     };
   },
   methods: {
@@ -122,6 +142,8 @@ export default {
           console.log(JSON.stringify(response.data));
         })
         .catch((e) => {
+          this.showSnackbar = true;
+          this.error = e;
           console.log(e);
         });
     },

@@ -21,7 +21,7 @@
           <md-list-item @click="menuVisible = !menuVisible">
             <md-icon>home</md-icon>
             <router-link to="/rosters"   class="nav-link"
-              ><span class="md-list-item-text">Home</span></router-link
+              ><span class="md-list-item-text">Rosters</span></router-link
             >
           </md-list-item>
 
@@ -42,7 +42,7 @@
           <md-list-item @click="menuVisible = !menuVisible">
             <md-icon>add</md-icon>
             <router-link to="/addproduct" class="nav-link">
-              <span class="md-list-item-text">+Product</span>
+              <span class="md-list-item-text">+ Product</span>
             </router-link>
           </md-list-item>
 
