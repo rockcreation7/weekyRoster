@@ -11,7 +11,8 @@ import {
   MdContent,
   MdDrawer, 
   MdField,
-  MdSnackbar
+  MdSnackbar,
+  MdRadio
 } from "vue-material/dist/components"
 import "vue-material/dist/vue-material.min.css"
 import "vue-material/dist/theme/default.css" 
@@ -27,6 +28,7 @@ Vue.use(MdToolbar)
 Vue.use(MdDrawer) 
 Vue.use(MdField)  
 Vue.use(MdSnackbar)
+Vue.use(MdRadio)
 console.log(process.env.NODE_ENV, 'process.env.NODE_ENV')
  
 

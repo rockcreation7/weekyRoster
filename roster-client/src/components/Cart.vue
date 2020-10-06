@@ -7,15 +7,19 @@
         :key="index"
       >
         <div class="md-list-item-text">
-          <span>{{ product.name }}</span>
-          <span>{{ product.cartQty }}</span>
-          <span>$ {{ product.price }}</span>
+          <span>{{ product.name }}</span> 
           <p>Code {{ product.code }}</p>
         </div>
+        <div class="md-list-item-text">
+          <span>$ {{ product.price }}</span>
+        </div>
+        <div class="md-list-item-text">
+          <span>$ {{ product.cartQty }}</span>
+        </div>
         <!-- 
-        <span @click="addToCart(product)">++</span>
-        <span @click="rmFromCart(product)">--</span>
- -->
+          <span @click="addToCart(product)">++</span>
+          <span @click="rmFromCart(product)">--</span>
+        -->
         <div>
           <md-button
             @click="addToCart(product)"
@@ -44,16 +48,15 @@
     <div class="fucntionBar">
       <md-field>
         <md-input
-          v-if="serachType === 'byName'"
           v-model="search"
-          placeholder="Search Name"
+          :placeholder="
+            serachType === 'byName'
+              ? 'Search Name'
+              : serachType === 'byPrice'
+              ? 'Search Price'
+              : 'Search Code'
+          "
           inputmode="text"
-        ></md-input>
-        <md-input
-          v-else
-          v-model="search"
-          placeholder="Search Price/Code"
-          inputmode="decimal"
         ></md-input>
       </md-field>
     </div>
@@ -62,7 +65,7 @@
       <md-button class="md-raised clear" @click="clearCart()">Clear</md-button>
     </div>
 
-    <div class="fucntionBar"> 
+    <div class="fucntionBar">
       <md-radio v-model="serachType" value="byPrice">by price</md-radio>
       <md-radio v-model="serachType" value="byName">by name</md-radio>
       <md-radio v-model="serachType" value="byCode">by code</md-radio>
@@ -109,15 +112,20 @@ export default {
           this.products = response.data;
           console.log(response.data);
         })
-        .catch((e) => {
-          console.log(e);
+        .catch((error) => {
+          this.$store.commit("errorMessage", error.message);
+          console.log(error);
         });
     },
     addToCart(product) {
       this.adjustCart(product, "add");
     },
     rmFromCart(product) {
-      this.adjustCart(product, "rm");
+      if(product.cartQty>1){
+        this.adjustCart(product, "rm");
+      } else {
+        this.$store.commit("errorMessage", 'Cannot reduce product : only 1 left');
+      }
     },
     dropFromCart(id) {
       this.cart = this.cart.filter((cartProduct) => cartProduct.id !== id);
@@ -157,7 +165,7 @@ export default {
       return this.products.filter((product) => {
         if (this.search === "") {
           return false;
-        } 
+        }
         switch (this.serachType) {
           case "byPrice":
             return String(product.price).includes(this.search.toLowerCase());

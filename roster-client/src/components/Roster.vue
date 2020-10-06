@@ -67,7 +67,9 @@
       </div>
     </form>
     <DataList />
-    <button type="submit" class="btn btn-primary" @click="updateRoster">Update</button>
+    <button type="submit" class="btn btn-primary" @click="updateRoster">
+      Update
+    </button>
   </div>
 
   <div v-else>
@@ -98,6 +100,7 @@ export default {
           this.currentRoster = response.data;
         })
         .catch((e) => {
+          this.$store.commit("errorMessage", e.message);
           console.log(e);
         });
     },
@@ -108,6 +111,7 @@ export default {
           this.$router.push("/");
         })
         .catch((e) => {
+          this.$store.commit("errorMessage", e.message);
           console.log(e);
         });
     },

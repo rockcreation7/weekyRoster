@@ -1,14 +1,21 @@
 <template>
-  <div class="list row"> 
+  <div class="list row">
     <md-list>
-      <md-list-item class="list-group-item" v-for="(roster, index) in rosters" :key="index">
+      <md-list-item
+        class="list-group-item"
+        v-for="(roster, index) in rosters"
+        :key="index"
+      >
         <div class="md-list-item-text">
-          <span>{{getDay(roster.date)}} {{roster.date.slice(5,10)}}</span>
-          <span>{{roster.upperStaff}} {{roster.upperTime}}</span>
-          <span>{{roster.lowerStaff}} {{roster.lowerTime}}</span>
+          <span>{{ getDay(roster.date) }} {{ roster.date.slice(5, 10) }}</span>
+          <span>{{ roster.upperStaff }} {{ roster.upperTime }}</span>
+          <span>{{ roster.lowerStaff }} {{ roster.lowerTime }}</span>
         </div>
         <a>
-          <md-button class="md-icon-button md-list-action" :href="'/roster/' + roster.date">
+          <md-button
+            class="md-icon-button md-list-action"
+            :href="'/roster/' + roster.date"
+          >
             <md-icon class="md">edit</md-icon>
           </md-button>
         </a>
@@ -54,6 +61,7 @@ export default {
           console.log(response.data);
         })
         .catch((e) => {
+          this.$store.commit("errorMessage", e.message);
           console.log(e);
         });
     },

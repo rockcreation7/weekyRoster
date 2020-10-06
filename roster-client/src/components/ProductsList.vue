@@ -6,7 +6,7 @@
       <md-list-item class="list-group-item" v-for="(product, index) in filteredList" :key="index">
         <span> {{product.name}}</span> 
         <span>$ {{product.price}}</span>
-        <span> -- {{product.code}}</span>
+        <span> {{product.code}}</span>
         <a>
           <md-button class="md-icon-button md-list-action" :href="'/product/' + product.id">
             <md-icon class="md">edit</md-icon>
@@ -39,6 +39,7 @@ export default {
           console.log(response.data);
         })
         .catch((e) => {
+          this.$store.commit("errorMessage", e.message);
           console.log(e);
         });
     },

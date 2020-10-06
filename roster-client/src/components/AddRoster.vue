@@ -116,8 +116,9 @@ export default {
           this.submitted = true;
           console.log(response);
         })
-        .catch((e) => {
-          console.log(e);
+        .catch((error) => {
+          this.$store.commit("errorMessage", error.message);
+          console.log(error);
         });
     },
 

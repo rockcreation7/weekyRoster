@@ -66,6 +66,7 @@ export default {
           this.currentProduct = response.data;
         })
         .catch((e) => {
+          this.$store.commit("errorMessage", e.message);
           console.log(e);
         });
     },
