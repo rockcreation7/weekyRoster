@@ -1,9 +1,10 @@
 import axios from "axios"
-const protocol = window.location.protocol
-const host = window.location.hostname
-export default axios.create({
-  // Development
-  baseURL: protocol + "//" + host + ":9000/api",
-  // Production
-  // baseURL: "/api",
+
+export default axios.create({ 
+  baseURL:
+    process.env.NODE_ENV === "development"
+      ? // Development
+        "http://localhost:9000/api"
+      : // Production
+        "/api",
 })

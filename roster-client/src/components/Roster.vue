@@ -5,6 +5,7 @@
       <div class="form-group">
         <label for="Date">Date</label>
         <input
+          disabled
           list="dateList"
           type="text"
           class="form-control"

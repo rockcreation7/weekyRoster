@@ -141,10 +141,9 @@ export default {
           this.submitted = true;
           console.log(JSON.stringify(response.data));
         })
-        .catch((e) => {
-          this.showSnackbar = true;
-          this.error = e;
-          console.log(e);
+        .catch((error) => {
+          this.$store.commit("errorMessage", error.message);
+          console.log(error);
         });
     },
 

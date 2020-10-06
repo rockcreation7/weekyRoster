@@ -3,7 +3,7 @@
     <h4>Roster</h4>
     <form>
       <div class="form-group">
-        <label for="Date">Name</label>
+        <label for="Name">Name</label>
         <input type="text" class="form-control" id="Name" v-model="currentProduct.name" />
       </div>
 

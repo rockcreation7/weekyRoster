@@ -10,11 +10,11 @@ import {
   MdToolbar,
   MdContent,
   MdDrawer, 
-  MdField
+  MdField,
+  MdSnackbar
 } from "vue-material/dist/components"
 import "vue-material/dist/vue-material.min.css"
-import "vue-material/dist/theme/default.css"
-MdIcon
+import "vue-material/dist/theme/default.css" 
 
 Vue.config.productionTip = false
 Vue.use(MdTable)
@@ -26,6 +26,10 @@ Vue.use(MdContent)
 Vue.use(MdToolbar)
 Vue.use(MdDrawer) 
 Vue.use(MdField)  
+Vue.use(MdSnackbar)
+console.log(process.env.NODE_ENV, 'process.env.NODE_ENV')
+ 
+
 new Vue({
   router,
   render: (h) => h(App),

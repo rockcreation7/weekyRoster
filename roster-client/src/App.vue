@@ -13,14 +13,12 @@
       </md-app-toolbar>
 
       <md-app-drawer :md-active.sync="menuVisible">
-        <md-toolbar class="md-transparent" md-elevation="0"
-          >Menu</md-toolbar
-        >
+        <md-toolbar class="md-transparent" md-elevation="0">Menu</md-toolbar>
 
         <md-list>
           <md-list-item @click="menuVisible = !menuVisible">
             <md-icon>home</md-icon>
-            <router-link to="/rosters"   class="nav-link"
+            <router-link to="/rosters" class="nav-link"
               ><span class="md-list-item-text">Rosters</span></router-link
             >
           </md-list-item>
@@ -59,12 +57,18 @@
         <router-view />
       </md-app-content>
     </md-app>
+    <notify></notify>
   </div>
 </template> 
 
 <script>
+import notify from "./components/notify";
+import { store } from "./store";
+
 export default {
+  components: { notify },
   name: "app",
+  store,
   data: () => ({
     menuVisible: false,
   }),
@@ -73,7 +77,7 @@ export default {
 
 <style>
 .md-app {
-/*   max-height: 400px;
+  /*   max-height: 400px;
   border: 1px solid rgba(#000, 0.12); */
   min-height: 100vh;
 }
